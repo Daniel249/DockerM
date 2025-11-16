@@ -1,0 +1,32 @@
+services:
+  web:
+    image: php:8.2-apache
+    ports:
+      - "8080:80"
+    environment:
+      - MOODLE_DATABASE_TYPE=mariadb
+      - MOODLE_DATABASE_HOST=db
+      - MOODLE_DATABASE_NAME=moodle
+      - MOODLE_DATABASE_USER=moodle
+      - MOODLE_DATABASE_PASSWORD=moodlepass
+    depends_on:
+      - db
+    volumes:
+      - ./www:/var/www/html
+    command: >
+      bash -c "
+      apt-get update &&
+      apt-get install -y git unzip libpng-dev libzip-dev libicu-dev libxml2-dev libcurl4-openssl-dev &&
+      docker-php-ext-install mysqli pdo pdo_mysql gd zip intl soap opcache &&
+      apache2-foreground
+      "
+
+  db:
+    image: mariadb:11
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=moodle
+      - MYSQL_USER=moodle
+      - MYSQL_PASSWORD=moodlepass
+    volumes:
+      - ./db_data:/var/lib/mysql
