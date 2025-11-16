@@ -4,9 +4,9 @@ db_data/
 # Moodle data directories
 moodledata/
 moodle_data/
-www/
 moodle_app/
 
 # Moodle config (contains passwords)
 www/config.php
+moodle_app/config.php
 moodle_app/config.php
